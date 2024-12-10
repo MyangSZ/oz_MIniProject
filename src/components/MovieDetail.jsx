@@ -7,9 +7,11 @@ import axios from "axios";
 
 function MovieDetail() {
   // axios
+  const { movie_id } = useParams();
+  // useParams - 컴포넌트의 최상위 수준에서만 호출 / 변수가 선언되기 전에 사용하면 에러발생
   const options = {
     method: "GET",
-    url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+    url: `https://api.themoviedb.org/3/movie/${movie_id}?language=ko-KR`,
     headers: {
       accept: "application/json",
       Authorization:
@@ -19,31 +21,30 @@ function MovieDetail() {
   useEffect(() => {
     axios
       .request(options)
-      .then((res) => setmovie(res.data.results))
+      .then((res) => setmovie(res.data))
       .catch((err) => console.error(err));
   }, []);
 
   // const { results } = movielist;
-  const { movie_id } = useParams();
   const [movie, setmovie] = useState();
 
-  const moviedetail = movie?.find((id) => id.id === Number(movie_id));
+  // const moviedetail = movie?.find((id) => id.id === Number(movie_id));
   // const { title, average, genres, overview } = moviedetail;
   return (
     <>
       <MovieInfo>
         <img
           className="img"
-          src={`https://image.tmdb.org/t/p/w500${moviedetail?.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`}
         />
-        <p className="title">{moviedetail?.title}</p>
-        <p className="average">{moviedetail?.vote_average}</p>
+        <p className="title">{movie?.title}</p>
+        <p className="average">{movie?.vote_average}</p>
         <div className="genres">
-          {moviedetail?.genre_ids.map((genres) => (
-            <span key={genres.id}>{genres}</span>
+          {movie?.genres.map((genres) => (
+            <span key={genres.id}>{genres.name}</span>
           ))}
         </div>
-        <p className="overview">{moviedetail?.overview}</p>
+        <p className="overview">{movie?.overview}</p>
       </MovieInfo>
     </>
   );
@@ -59,7 +60,7 @@ const MovieInfo = styled.div`
     "img title average"
     "img genres genres"
     "img overview overview";
-  grid-gap: 1rem;
+  grid-gap: 2rem;
   grid-row-gap: 0.5rem;
   .img {
     grid-area: img;
@@ -72,22 +73,23 @@ const MovieInfo = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 5px double #c0c0c0;
   }
 
   .title {
     grid-area: title;
     font-size: 40px;
     font-weight: 900;
-    border-bottom: 1px solid gray;
   }
   .average {
     grid-area: average;
+    font-size: 20px;
   }
   .genres {
     grid-area: genres;
-    font-size: 30px;
+    font-size: 20px;
     padding-left: 10px;
-    place-self: center;
+    place-self: center start;
   }
   .overview {
     grid-area: overview;

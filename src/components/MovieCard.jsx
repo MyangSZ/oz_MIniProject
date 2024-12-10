@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 function MovieCard() {
   const options = {
     method: "GET",
-    url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+    url: "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1",
     headers: {
       accept: "application/json",
       Authorization:
