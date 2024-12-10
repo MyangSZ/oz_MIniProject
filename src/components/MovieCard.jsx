@@ -1,17 +1,38 @@
 import styled from "styled-components";
-import movielist from "../data/movieListData.json";
+// import movielist from "../data/movieListData.json";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function MovieCard() {
-  const { results } = movielist;
+  const options = {
+    method: "GET",
+    url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNzAzMGM2ZmVhNDNiMGQwMmQ3NDg4Nzc0Y2U1M2QxNiIsIm5iZiI6MTczMjg2NzY5OC4xNDcsInN1YiI6IjY3NDk3NjcyYWQ4YWYzMTY1MjAwMzQ0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uZawarxKunsulxbZpmwqxOjNYXo6L4yx7_EXBehjYRY",
+    },
+  };
+  useEffect(() => {
+    axios
+      .request(options)
+      .then((res) => setmovie(res.data.results))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const [movie, setmovie] = useState([]);
+  const filtermovie = movie.filter((moviecard) => !moviecard.adult);
+
+  // const { results } = movielist;
   const navigate = useNavigate();
   return (
     <List>
-      {results.map((item) => {
+      {filtermovie.map((item) => {
         const { id, title, poster_path, vote_average } = item;
         return (
           <>
-            <div className="border rounded-[15px] shadow-md p-[10px]">
+            <div className="border rounded-[15px] shadow-md p-[10px] w-[320px]">
               <MovieCarditem
                 key={id}
                 cardsrc={`https://image.tmdb.org/t/p/w500/${poster_path}`}
@@ -54,7 +75,7 @@ const MovieTitle = styled.span`
   margin-top: 10px;
   justify-content: center;
   align-items: center;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
 `;
 const MoveieAverage = styled.span`

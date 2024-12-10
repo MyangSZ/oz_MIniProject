@@ -14,3 +14,8 @@
 - 디테일페이지 만들기
 - 디테일페이지 styled-component(grid사용)
 - NavBar Outlet 사용
+
+### 24.12.10 추가작업
+
+- API 사용하기 (API 호출 통해 데이터 popular 목록)
+- axios 사용
