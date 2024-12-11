@@ -39,7 +39,7 @@ function MovieCard() {
         const { id, title, poster_path, vote_average } = item;
         return (
           <>
-            <div className="border rounded-[15px] shadow-md p-[10px] w-[320px]">
+            <div className="border rounded-[15px] shadow-[0_-1px_7px_0_gray] p-[10px] w-[320px] hover:scale-105 hover:duration-500">
               {/* 영화 포스터 . 클릭시 navigate 사용해 상세페이지로 이동 */}
               <MovieCarditem
                 key={id}
@@ -77,6 +77,10 @@ const MovieCarditem = styled.section`
   background-position: center center; // 이미지 가운데 정렬
   background-size: cover; // 사이즈에 맞게 축소 또는 확장하기
   border-radius: 15px;
+  /* &:hover {
+    transform: scale(1.05, 1.05);
+    transition-duration: 0.5s;
+  } */
 `;
 
 // 영화제목표시

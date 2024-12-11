@@ -26,3 +26,6 @@
 ### 24.12.11
 
 - .env 파일 위치 수정
+- css 수정 (NavBar 수정) - styled-component, Tailwind-CSS
+
+- 검색창 기능 작업 중
