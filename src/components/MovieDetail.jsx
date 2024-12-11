@@ -7,6 +7,8 @@ import axios from "axios";
 
 function MovieDetail() {
   // axios
+
+  // useParams사용해 url에서 동적으로 movie_id가져오기
   const { movie_id } = useParams();
   // useParams - 컴포넌트의 최상위 수준에서만 호출 / 변수가 선언되기 전에 사용하면 에러발생
   const options = {
@@ -14,10 +16,12 @@ function MovieDetail() {
     url: `https://api.themoviedb.org/3/movie/${movie_id}?language=ko-KR`,
     headers: {
       accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNzAzMGM2ZmVhNDNiMGQwMmQ3NDg4Nzc0Y2U1M2QxNiIsIm5iZiI6MTczMjg2NzY5OC4xNDcsInN1YiI6IjY3NDk3NjcyYWQ4YWYzMTY1MjAwMzQ0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uZawarxKunsulxbZpmwqxOjNYXo6L4yx7_EXBehjYRY",
+      Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+      // Authorization:
+      //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNzAzMGM2ZmVhNDNiMGQwMmQ3NDg4Nzc0Y2U1M2QxNiIsIm5iZiI6MTczMjg2NzY5OC4xNDcsInN1YiI6IjY3NDk3NjcyYWQ4YWYzMTY1MjAwMzQ0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uZawarxKunsulxbZpmwqxOjNYXo6L4yx7_EXBehjYRY",
     },
   };
+  console.log(import.meta.env.VITE_TMDB_API_KEY);
   useEffect(() => {
     axios
       .request(options)
@@ -32,14 +36,17 @@ function MovieDetail() {
   // const { title, average, genres, overview } = moviedetail;
   return (
     <>
+      {/* 영화 상세정보 렌더링하기 */}
       <MovieInfo>
         <img
           className="img"
           src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`}
         />
+        {/* movie가 undefined일 경우 옵셔널 체이닝(movie?.)으로 오류 방지하며 데이터 렌더링 */}
         <p className="title">{movie?.title}</p>
         <p className="average">{movie?.vote_average}</p>
         <div className="genres">
+          {/* 영화 장르 배열 */}
           {movie?.genres.map((genres) => (
             <span key={genres.id}>{genres.name}</span>
           ))}

@@ -7,13 +7,14 @@ import { useEffect, useState } from "react";
 function MovieCard() {
   const options = {
     method: "GET",
-    url: "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1",
+    url: "https://api.themoviedb.org/3/movie/popular?language=ko-KR",
     headers: {
       accept: "application/json",
       Authorization:
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNzAzMGM2ZmVhNDNiMGQwMmQ3NDg4Nzc0Y2U1M2QxNiIsIm5iZiI6MTczMjg2NzY5OC4xNDcsInN1YiI6IjY3NDk3NjcyYWQ4YWYzMTY1MjAwMzQ0NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uZawarxKunsulxbZpmwqxOjNYXo6L4yx7_EXBehjYRY",
     },
   };
+  // 데이터 가져오기
   useEffect(() => {
     axios
       .request(options)
@@ -21,24 +22,33 @@ function MovieCard() {
       .catch((err) => console.error(err));
   }, []);
 
+  // 상태관리. [영화 목록 데이터저장, 상태업데이트 함수]
   const [movie, setmovie] = useState([]);
+  // 성인영화 필터링. adult속성이 false인 영화 필터링
   const filtermovie = movie.filter((moviecard) => !moviecard.adult);
 
   // const { results } = movielist;
+  // 상세페이지 이동. useNavigate 사용해 상세페이지로 이동
   const navigate = useNavigate();
   return (
     <List>
+      {/* 영화 목록 렌더링
+      배열 순회하며 영화 데이터 렌더링
+      id, title, poster_path, vote_average 추출*/}
       {filtermovie.map((item) => {
         const { id, title, poster_path, vote_average } = item;
         return (
           <>
             <div className="border rounded-[15px] shadow-md p-[10px] w-[320px]">
+              {/* 영화 포스터 . 클릭시 navigate 사용해 상세페이지로 이동 */}
               <MovieCarditem
                 key={id}
                 cardsrc={`https://image.tmdb.org/t/p/w500/${poster_path}`}
                 onClick={() => navigate(`/detail/${id}`)}
               ></MovieCarditem>
+              {/* 영화 타이틀 */}
               <MovieTitle>{title}</MovieTitle>
+              {/* 영화 평점 */}
               <MoveieAverage>평점 : {vote_average} </MoveieAverage>
             </div>
           </>
